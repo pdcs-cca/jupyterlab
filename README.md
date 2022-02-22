@@ -19,7 +19,7 @@ bash Mambaforge-Linux-x86_64.sh -b -f -p /opt/software/apps/python/mambaforge
 Instalación install jupyterlab jupyterhub
 ~~~bash
 source /opt/software/apps/python/mambaforge/etc/profile.d/mamba.sh
-mamba install jupyterlab jupyterhub
+mamba install jupyterlab jupyterhub nb_conda_kernels
 ~~~
 
 
@@ -28,6 +28,7 @@ Creación entorno PAPIME
 source /opt/software/apps/python/mambaforge/etc/profile.d/mamba.sh
 mamba create -n PAPIME 
 mamba install -n PAPIME pynio pyngl  matplotlib xarray netcdf4 cartopy plotly scipy pandas
+mamba install -n  PAPIME ipykernel
 ~~~
 
 
