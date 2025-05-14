@@ -2,34 +2,19 @@
 Notas para la instalación y configuración de jupyterlab
 
 
-
-Usuario root
 ~~~bash
-mkdir -pv /opt/software/apps/python/mambaforge/
-chown soporte:soporte /opt/software/apps/python/mambaforge/
+export MAMBA_ROOT_PREFIX=/opt/jupyter-4.3.6
+cd $MAMBA_ROOT_PREFIX
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+eval "$(./bin/micromamba shell hook -s bash)"
+micromamba activate
+micromamba install jupyterhub-idle-culler
+pip install jupyterlab-theme-toggler
 ~~~
 
-Usuario soporte
-~~~bash 
-cd /opt/software/apps/python/mambaforge/
-curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
-bash Mambaforge-Linux-x86_64.sh -b -f -p /opt/software/apps/python/mambaforge
-~~~
-
-Instalación install jupyterlab jupyterhub
 ~~~bash
-source /opt/software/apps/python/mambaforge/etc/profile.d/mamba.sh
-mamba install jupyterlab jupyterhub nb_conda_kernels
+micromamba create -n tflow-2.18.0 tensorflow=2.18.0 deepxde pyDOE scipy matplotlib \
+numpy ipykernel
+micromamba run -n tflow-2.18.0 python -m ipykernel install  --name tflow-2.18.0 --display-name "TFlow 2.18.0" --prefix=$MAMBA_ROOT_PREFIX
 ~~~
-
-
-Creación entorno PAPIME
-~~~bash
-source /opt/software/apps/python/mambaforge/etc/profile.d/mamba.sh
-mamba create -n PAPIME 
-mamba install -n PAPIME pynio pyngl  matplotlib xarray netcdf4 cartopy plotly scipy pandas
-mamba install -n  PAPIME ipykernel
-~~~
-
-
 
