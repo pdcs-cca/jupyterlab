@@ -8,7 +8,7 @@ cd $MAMBA_ROOT_PREFIX
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 eval "$(./bin/micromamba shell hook -s bash)"
 micromamba activate
-micromamba install jupyterhub-idle-culler
+micromamba install jupyterhub jupyterlab jupyterhub-idle-culler jupyter-resource-usage 
 pip install jupyterlab-theme-toggler
 ~~~
 
