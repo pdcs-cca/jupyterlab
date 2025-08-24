@@ -4,6 +4,7 @@ Notas para la instalación y configuración de jupyterlab
 
 ~~~bash
 export MAMBA_ROOT_PREFIX=/opt/jupyter-4.3.6
+test ! -d $MAMBA_ROOT_PREFIX && mkdir -p $MAMBA_ROOT_PREFIX
 cd $MAMBA_ROOT_PREFIX
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 eval "$(./bin/micromamba shell hook -s bash)"
