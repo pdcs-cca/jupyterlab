@@ -54,3 +54,25 @@ c.JupyterHub.services = [
 ]
 
 ~~~
+
+registra-kernel.sh 
+
+~~~bash
+#!/bin/bash
+
+test $# -le 1 && echo "Uso: $0 entorno Nombre-kernel" && exit 123
+PREFIX=$(dirname $0)
+
+export MAMBA_ROOT_PREFIX=$(dirname $0)
+eval "$($MAMBA_ROOT_PREFIX/bin/mamba shell hook -s bash)"
+mamba activate
+
+ENV=$1
+shift
+DISPLAY="$*"
+
+
+test ! -d $MAMBA_ROOT_PREFIX/envs/$ENV && echo -e "No se encuentea el entorno $ENV en $MAMBA_ROOT_PREFIX/envs:\n$(ls $MAMBA_ROOT_PREFIX/envs | cat -n )" && exit 123
+
+mamba run -n $ENV python -m ipykernel install --name $ENV --display-name "$DISPLAY" --user
+~~~
