@@ -72,7 +72,9 @@ shift
 DISPLAY="$*"
 
 
-test ! -d $MAMBA_ROOT_PREFIX/envs/$ENV && echo -e "No se encuentea el entorno $ENV en $MAMBA_ROOT_PREFIX/envs:\n$(ls $MAMBA_ROOT_PREFIX/envs | cat -n )" && exit 123
+test ! -d $MAMBA_ROOT_PREFIX/envs/$ENV &&
+echo -e "No se encuentea el entorno $ENV en $MAMBA_ROOT_PREFIX/envs:\n$(ls $MAMBA_ROOT_PREFIX/envs | cat -n )" &&
+exit 123
 
 mamba run -n $ENV python -m ipykernel install --name $ENV --display-name "$DISPLAY" --user
 ~~~
