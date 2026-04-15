@@ -3,13 +3,25 @@ Notas para la instalación y configuración de jupyterlab
 
 
 ~~~bash
-export MAMBA_ROOT_PREFIX=/opt/jupyter-4.3.6
-test ! -d $MAMBA_ROOT_PREFIX && mkdir -p $MAMBA_ROOT_PREFIX
-cd $MAMBA_ROOT_PREFIX
-curl -L# https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-eval "$(./bin/micromamba shell hook -s bash)"
+#!/bin/bash
+export MAMBA_ROOT_PREFIX=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+_setup(){
+#cd $MAMBA_ROOT_PREFIX
+curl -L# https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -C $MAMBA_ROOT_PREFIX -xvj bin/micromamba
+}
+
+_init(){
+eval "$($MAMBA_ROOT_PREFIX/bin/micromamba shell hook -s bash)"
 micromamba activate
-micromamba install jupyterhub jupyterlab jupyterhub-idle-culler jupyter-resource-usage 
+}
+
+test ! -f $MAMBA_ROOT_PREFIX/bin/micromamba && _setup
+_init
+~~~
+
+~~~bash
+micromamba install python=3.12 jupyterlab jupyterhub jupyterhub-idle-culler pytest-playwright jupyter-lsp-python jupyter-resource-usage 
 pip install jupyterlab-theme-toggler
 ~~~
 
