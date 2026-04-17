@@ -36,19 +36,21 @@ micromamba run -n tflow-2.18.0 python -m ipykernel install  --name tflow-2.18.0 
 jupyterhub_config.py
 
 ~~~python
-import sys
-c.Authenticator.allow_all = True                                
-c.PAMAuthenticator.admin_groups = {'sudo'}                            
-c.JupyterHub.load_roles = [                                 
-    {                                                       
+import sys                                                                                                             
+                                                                                                                       
+c.Authenticator.allow_all = True                                                                                       
+c.PAMAuthenticator.admin_groups = {'sudo'}                 
+                                                           
+c.JupyterHub.load_roles = [                                
+    {                                                      
         "name": "jupyterhub-idle-culler-role",             
-        "scopes": [                                         
-            "list:users",                                   
+        "scopes": [                                        
+            "list:users",                                  
             "read:users:activity",                         
-            "read:servers",                                 
-            "delete:servers",                               
+            "read:servers",                                
+            "delete:servers",                              
             # "admin:users", # if using --cull-users       
-        ],                                                  
+        ],                                                 
         # assignment of role's permissions to:         
         "services": ["jupyterhub-idle-culler-service"],
     }
@@ -60,10 +62,26 @@ c.JupyterHub.services = [
         "command": [sys.executable,
             "-m", "jupyterhub_idle_culler",
             "--timeout=3600",
+            "--cull-every=300",
         ],
         # "admin": True,
     }
 ]
+
+c.Spawner.args = [
+    '--MappingKernelManager.cull_idle_timeout=900',   # 15 min
+    '--MappingKernelManager.cull_interval=300',      # Cada 5 min
+    '--MappingKernelManager.cull_connected=False',   # No cullar si hay pestaña abierta
+]
+
+c.JupyterHub.log_level = 'DEBUG'
+c.JupyterHub.extra_log_file = '/var/log/jupyterhub.log'
+
+c.Spawner.environment = {
+        "MWI_SHUTDOWN_ON_IDLE_TIMEOUT": "60",
+        "MWI_USE_EXISTING_LICENSE": "True",
+        "MLM_LICENSE_FILE": "27000@server.mx",
+}
 
 ~~~
 
