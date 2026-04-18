@@ -1,7 +1,7 @@
 # jupyterlab
 Notas para la instalación y configuración de jupyterlab
 
-
+# Micromamba
 ~~~bash
 #!/bin/bash
 export MAMBA_ROOT_PREFIX=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -33,7 +33,7 @@ micromamba run -n tflow-2.18.0 python -m ipykernel install  --name tflow-2.18.0 
 
 ---
 
-jupyterhub_config.py
+# jupyterhub_config.py
 
 ~~~python
 import sys                                                                                                             
@@ -85,7 +85,7 @@ c.Spawner.environment = {
 
 ~~~
 
-registra-kernel.sh 
+# registra-kernel.sh 
 
 ~~~bash
 #!/bin/bash
@@ -107,5 +107,40 @@ DISPLAY="$*"
 test ! -d $MAMBA_ROOT_PREFIX/envs/$ENV && echo -e "No se encuentea el entorno $ENV en $MAMBA_ROOT_PREFIX/envs:\n$(ls $MAMBA_ROOT_PREFIX/envs | cat -n )" && exit 123 
 
 $MAMBA run -n $ENV python -m ipykernel install --name $ENV --display-name "$DISPLAY" --user
+
+~~~
+
+---
+# jupyterhub.service
+~~~python
+[Unit]                                                                                                                               
+Description=Jupyter Hub service                                                                                                      
+                                                                                                                                     
+[Service]                                                                                                                            
+Type=simple                                                                                                                          
+WorkingDirectory=/opt/software/apps/jupyterlab/opt/db-users                                                                          
+ExecStart=/opt/software/apps/jupyterlab/opt/jupyterhub.sh                                                                            
+Restart=on-failure                                                                                                                   
+RestartSec=25s                                                                                                                       
+LimitCPU=10000                                                                                                                       
+#LimitAS=14G:14G                                                                                                                     
+#LimitNPROC=90000                                                                                                                    
+LimitMEMLOCK=64G:64G                                                                                                                 
+LimitSTACK=64G:64G                                                                                                                   
+                                                                                                                                     
+[Install]                                                                                                                            
+WantedBy=multi-user.target                                                                                                           
+~~~
+
+# jupyterhub.sh
+                 
+~~~bash
+#!/bin/bash                                                                                                                          
+                                                                                                                                     
+export MAMBA_ROOT_PREFIX=/opt/software/apps/jupyterlab                                                                               
+eval "$($MAMBA_ROOT_PREFIX/bin/micromamba shell hook -s bash)"                                                                       
+micromamba activate                                                                                                                  
+                                                                                                                                     
+/usr/bin/env jupyterhub --config=/opt/software/apps/jupyterlab/opt/jupyterhub_config.py --url=http://127.0.0.1:8000/jupyter          
 
 ~~~
