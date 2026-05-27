@@ -24,6 +24,7 @@ rm -fv $VNCDIR/*.{log,pid} $HOME/.ICEauthority $HOME/.Xauthority /tmp/.X$VNCDISP
 
 WEBVNC=$((8900+$VNCDISPLAY))
 VNCSERVER=$((5900+$VNCDISPLAY))
+kill $(lsof -t -i :$WEBVNC)
 
 vncserver :$VNCDISPLAY -desktop "Desktop $USER"  -localhost -AlwaysShared -AcceptKeyEvents \
 	-AcceptPointerEvents -AcceptSetDesktopSize -SendCutText -AcceptCutText -autokill 
