@@ -14,7 +14,7 @@ echo "#!/bin/sh
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 export DISPLAY=$DISPLAY
-/usr/bin/dbus-launch --exit-with-session /usr/bin/xfce4-session
+/usr/bin/dbus-launch --exit-with-session /usr/bin/mate-session
 " > $VNCDIR/xstartup
 chmod 755 $VNCDIR/xstartup 
 
