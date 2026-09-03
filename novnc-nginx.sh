@@ -11,8 +11,6 @@ systemctl --now disable cups.service
 timedatectl set-timezone America/Mexico_City
 systemctl --now disable firewalld.service  
 
-set -e
-
 echo "=========================================="
 echo "Instalación de NoVNC + Nginx + SSL"
 echo "Rocky Linux 9"
@@ -214,6 +212,6 @@ runuser -l alumno -c "chmod 600 /home/alumno/.vnc/passwd "
 runuser -l alumno -c "vncserver -kill :0"
 runuser -l alumno -c "vncserver :0"
 
-echo "https://$(curl -s ifconfig.me)/?reconnect=1&autoconnect=1&password=$(cat /home/alumno/.vncpasswd)"  > /home/alumno/.url 
+echo "https://$(curl -s ifconfig.me)/?resize=scale&reconnect=1&autoconnect=1&password=$(cat /home/alumno/.vncpasswd)&show_dot=1"  > /home/alumno/.url 
 cat /home/alumno/.url
 
