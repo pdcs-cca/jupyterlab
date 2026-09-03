@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd /root
-dnf remove VirtualBox-7.2-7.2.2_170484_el9-1.x86_64 
-dnf install epel-release
-test ! -d /opt/VirtualBox && wget https://download.virtualbox.org/virtualbox/7.2.16/VirtualBox-7.2.16-174877-Linux_amd64.run && bash /root/VirtualBox-7.2.16-174877-Linux_amd64.run
+dnf -y remove VirtualBox-7.2-7.2.2_170484_el9-1.x86_64 
+dnf -y install epel-release
+test ! -x /opt/VirtualBox/VirtualBox && wget https://download.virtualbox.org/virtualbox/7.2.16/VirtualBox-7.2.16-174877-Linux_amd64.run && bash /root/VirtualBox-7.2.16-174877-Linux_amd64.run
 dnf install -y qt6-qtwebview
 systemctl --now disable rpcbind.service 
 systemctl --now disable rpcbind.socket
@@ -214,4 +214,8 @@ runuser -l alumno -c "vncserver :0"
 
 echo "https://$(curl -s ifconfig.me)/?resize=scale&reconnect=1&autoconnect=1&password=$(cat /home/alumno/.vncpasswd)&show_dot=1"  > /home/alumno/.url 
 cat /home/alumno/.url
+echo "Port 9022" > /etc/ssh/sshd_config.d/50-local.conf
+service sshd reload 
+useradd -ms /bin/bash -G wheel soporte
+
 
