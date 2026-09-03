@@ -217,7 +217,7 @@ cat /home/alumno/.url
 echo "Port 9022" > /etc/ssh/sshd_config.d/50-local.conf
 service sshd reload 
 useradd -ms /bin/bash -G wheel soporte
+echo ":::: passwd soporte "
 echo "alumno:$(openssl rand -base64 12)" | tee /home/alumno/.pass | chpasswd 
-
-
+echo "alumno PASS: $(cat /home/alumno/.pass)"
 
